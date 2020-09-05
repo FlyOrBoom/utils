@@ -8,17 +8,20 @@ form{
   top:0
 }
 label{
-  display:block
+  display:flex
 }
 input{
-  font-family:Monospace
+  font-family:Monospace;
+  flex-grow:1;
+  margin-left:1rem;
+  text-align:right;
 }
 </style>
 
 <form>
   <label>
     Hong converter
-    <input value='10-74(+8)'>
+    <input value='10-74(+8)' autofocus>
   </label><label>
     Prefix
     <input value=''>
