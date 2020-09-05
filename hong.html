@@ -1,53 +1,81 @@
+
 <style>
+html{
+  font-size:16pt;
+}
 body{
   text-align:center;
-  background:#eef
+  background:#eef;
+  margin:auto;
+  padding:5vmin;
+  max-width:50ch;
 }
 form{
   position:sticky;
-  top:0
+  margin-top:1rem;
+  top:1rem;
 }
 label{
-  display:flex
+  display:flex;
+  white-space:nowrap;
+}
+label *{
+  margin:.1rem;
+}
+label span{
+  font-size:.5rem;
+  text-transform:uppercase;
+  flex:0 0 7ch; 
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 input{
+  height:auto;
+  border:0;
+  font-size:1rem;
   font-family:Monospace;
-  flex-grow:1;
-  margin-left:1rem;
+  flex:0 1 50ch;
+  width:0;
   text-align:right;
+  background:white;
 }
 </style>
-
+Hong Homework Converter
 <form>
   <label>
-    Hong converter
+    <span>input</span>
     <input value='10-74(+8)' autofocus>
   </label><label>
-    Prefix
+    <span>prefix</span>
     <input value=''>
   </label><label>
-    Suffix
+    <span>suffix</span>
     <input value='.'>
   </label>
+  <button>
+    Copy
+  </button>
 </form>
 
 <pre></pre>
 
 <script>
 const inputs = Array.from(
-	document.querySelectorAll('input')
+  document.querySelectorAll('input')
 )
 inputs.forEach(
-	input=>
+  input=>
   input.addEventListener('input',update)
 )
 const [list,prefix,suffix] = inputs
+const pre = document.querySelector('pre')
 
 
 function update(){
-	const out = []
+  const out = []
   list
-  	.value
+    .value
     .toLowerCase()
     .replace(/page.*\//,'')
     .split(',')
@@ -56,10 +84,10 @@ function update(){
       if ( item.includes('-') ) {
       
         const [min,max] = item
-        .replace(/\(.*/g,'')
-        .split('-')
-        .map(x=>Number(x))
-        .sort((a, b) => a - b)
+          .replace(/\(.*/g,'')
+          .split('-')
+          .map(x=>Number(x))
+          .sort((a, b) => a - b)
 
         const even = item.includes('e')
         const odd = item.includes('o')
@@ -76,10 +104,10 @@ function update(){
             (x, index) => index*interval + min
           )
           .filter( x =>
-                  odd ? x%2
-                  : even ? !(x%2)
-                  : true
-                 )
+            odd ? x%2
+            : even ? !(x%2)
+            : true
+          )
 
         out.push(...range)
       } else {
@@ -88,15 +116,20 @@ function update(){
       
     })
   
-  document.querySelector('pre').textContent = (
-  	prefix.value
+  pre.textContent = (
+    prefix.value
     +out.join(
-    	suffix.value
+      suffix.value
       +'\n'
       +prefix.value
     )
     +suffix.value
   )
 }
+document.querySelector('button').addEventListener('click',event=>{
+  navigator.clipboard.writeText(pre.textContent)
+  event.preventDefault()
+})
+
 update()
 </script>
