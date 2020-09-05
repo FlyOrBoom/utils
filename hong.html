@@ -1,32 +1,90 @@
-Hong converter
-<input>
+<style>
+body{
+  text-align:center
+}
+form{
+  position:sticky;
+  top:0
+}
+label{
+  display:block
+}
+input{
+  font-family:Monospace
+}
+</style>
+
+<form>
+  <label>
+    Hong converter
+    <input value='10-74(+8)'>
+  </label><label>
+    Prefix
+    <input value=''>
+  </label><label>
+    Suffix
+    <input value='.'>
+  </label>
+</form>
+
 <pre></pre>
+
 <script>
-document.querySelector('input').addEventListener('input',i=>{
+const inputs = Array.from(
+	document.querySelectorAll('input')
+)
+inputs.forEach(
+	input=>
+  input.addEventListener('input',update)
+)
+const [list,prefix,suffix] = inputs
+
+
+function update(){
 	const out = []
-  i.target.value.toLowerCase().split(',').forEach(item=>{
+  list.value.toLowerCase().split(',').forEach(item => {
     if ( item.includes('-') ) {
       const [min,max] = item
-        .replace(/[^\d-]/g,'')
-        .split('-')
-        .map(x=>Number(x))
-        .sort((a, b) => a - b)
+      .replace(/\(.*/g,'')
+      .split('-')
+      .map(x=>Number(x))
+      .sort((a, b) => a - b)
 
       const even = item.includes('e')
       const odd = item.includes('o')
-
+      const interval_match = item.match(/(?<=\+)\d+/)
+      const interval = interval_match
+        ? Number(interval_match[0])
+        : 1
+        
+      const count = Math.ceil((max-min+1)/interval)
+      
       let range = Array
         .from(
-          {length: max - min + 1 },
-          (x, index) => index + min
+          {length: count },
+          (x, index) => index*interval + min
         )
-        .filter( x => odd ? x%2 : even ? !x%2 : true )
+        .filter( x =>
+                odd ? x%2
+                : even ? !(x%2)
+                : true
+               )
 
       out.push(...range)
     } else {
       out.push(Number(item.replace(/\D/g,'')))  
     }
   })
-  document.querySelector('pre').textContent = out.join('.\n')+'.'
-})
+  
+  document.querySelector('pre').textContent = (
+  	prefix.value
+    +out.join(
+    	suffix.value
+      +'\n'
+      +prefix.value
+    )
+    +suffix.value
+  )
+}
+update()
 </script>
