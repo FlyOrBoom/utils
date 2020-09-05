@@ -1,7 +1,9 @@
+Hong converter
 <input>
 <pre></pre>
 <script>
-document.querySelector('input').addEventListener('change',i=>{
+document.querySelector('input').addEventListener('input',i=>{
+	const out = []
   i.target.value.toLowerCase().split(',').forEach(item=>{
     if ( item.includes('-') ) {
       const [min,max] = item
@@ -25,6 +27,6 @@ document.querySelector('input').addEventListener('change',i=>{
       out.push(Number(item.replace(/\D/g,'')))  
     }
   })
-  document.querySelector('pre').textContent = out.join('.\n')
-}
+  document.querySelector('pre').textContent = out.join('.\n')+'.'
+})
 </script>
