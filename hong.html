@@ -1,0 +1,30 @@
+<input>
+<pre></pre>
+<script>
+document.querySelector('input').addEventListener('change',i=>{
+  i.target.value.toLowerCase().split(',').forEach(item=>{
+    if ( item.includes('-') ) {
+      const [min,max] = item
+        .replace(/[^\d-]/g,'')
+        .split('-')
+        .map(x=>Number(x))
+        .sort((a, b) => a - b)
+
+      const even = item.includes('e')
+      const odd = item.includes('o')
+
+      let range = Array
+        .from(
+          {length: max - min + 1 },
+          (x, index) => index + min
+        )
+        .filter( x => odd ? x%2 : even ? !x%2 : true )
+
+      out.push(...range)
+    } else {
+      out.push(Number(item.replace(/\D/g,'')))  
+    }
+  })
+  document.querySelector('pre').textContent = out.join('.\n')
+}
+</script>
