@@ -125,7 +125,7 @@
             out.push(...range)
           } else {
             const digit_string = item.replace(/\D/g,'')
-            if ( digit_string !== '' ) out.push(Number())  
+            if ( digit_string !== '' ) out.push(Number(digit_string))  
           }
 
         })
