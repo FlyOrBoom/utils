@@ -40,6 +40,10 @@ input{
   text-align:right;
   background:white;
 }
+button{
+  min-width:36ch;
+  cursor:pointer;
+}
 </style>
 Hong Homework Converter
 <form>
@@ -70,7 +74,7 @@ inputs.forEach(
 )
 const [list,prefix,suffix] = inputs
 const pre = document.querySelector('pre')
-
+const copy = document.querySelector('button')
 
 function update(){
   const out = []
@@ -125,8 +129,10 @@ function update(){
     )
     +suffix.value
   )
+  
+  copy.textContent = out.length + ' problems — Copy to clipboard'
 }
-document.querySelector('button').addEventListener('click',event=>{
+copy.addEventListener('click',event=>{
   navigator.clipboard.writeText(pre.textContent)
   event.preventDefault()
 })
