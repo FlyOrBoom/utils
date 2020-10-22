@@ -1,14 +1,6 @@
 <script>
 const image = new Image()
-setInterval(
-	()=>{
-  	image.src = 'https://i.imgur.com/removed.png'
-  },
-  509
-)
-setInterval(
-  ()=>{document.title='Off'},
-  1001
-)
-image.onload = () => {document.title='On'}
+setInterval(()=>{image.src = 'https://i.imgur.com/removed.png'},100)
+setInterval(()=>{document.title='Off'},200)
+image.onload=()=>{document.title='On'}
 </script>
