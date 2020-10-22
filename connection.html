@@ -1,6 +1,21 @@
 <script>
+const canvas = document.createElement('canvas');
+canvas.width = canvas.height = 1;
+const ctx = canvas.getContext('2d');
+
+const fav = document.createElement('link')
+fav.type = 'image/png'
+fav.rel = 'shortcut icon'
+document.querySelector('head').appendChild(fav);
+
+function update(color){
+  ctx.fillStyle = color
+  ctx.fillRect(0,0,1,1)
+  fav.href = canvas.toDataURL('image/png')
+}
+
 const image = new Image()
 setInterval(()=>{image.src='https://i.imgur.com/removed.png?'+Math.random()},100)
-setInterval(()=>{document.title='Off'},200)
-image.onload=()=>{document.title='On'}
+setInterval(()=>{update('#f00')},200)
+image.onload=()=>{update('#000')}
 </script>
