@@ -1,0 +1,68 @@
+<style>
+input,div{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  font-family: Courier, Monospace;
+  text-align: center;
+}
+div{
+  height: 10rem;
+  font-size: 1rem;
+  margin: 1rem;
+}
+input{
+  height: 100%;
+  border: 0;
+  font-size: 50vw;
+}
+input.right{
+  background: blue;
+  animation: 300ms flash-blue both;
+}
+input.wrong{
+  animation: 300ms flash-red both;
+}
+@keyframes flash-blue{
+  from { background: cyan }
+  to { background: white }
+}
+@keyframes flash-red{
+  from { background: red }
+  to { background: white }
+}
+</style>
+<input type=number min=0 max=25>
+<div>0/0 correct, 0/minute</div>
+<script>
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+const input = document.querySelector('input')
+const randletter = () => alphabet[Math.floor(Math.random()*alphabet.length)]
+
+const output = document.querySelector('div')
+const start = performance.now()
+
+let score = 0
+let total = 0
+let speed = 0
+
+let state = true
+
+input.placeholder = randletter()
+input.addEventListener('change',()=>{
+  if (input.value == alphabet.indexOf(input.placeholder)) {
+    input.placeholder = randletter()
+    input.classList.add('right')
+    score++
+    total++
+  } else {
+    input.classList.add('wrong')
+    score--
+  }
+  speed = Math.round(60*1000*score/(performance.now()-start))
+  output.textContent = `${score}/${total} correct, ${speed}/minute`
+  setTimeout(()=>input.classList.remove('right','wrong'),300)
+  input.value = ''
+})
+</script>
