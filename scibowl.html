@@ -136,7 +136,7 @@ function draw(){
   document.body.style.backgroundColor = 
     time === 0 ? '#faa' : // dead
     pause.checked ? '#abf' : // paused
-    time <= 5000 ? '#bf8' : // tossup or late bonus
+    time < 6000 ? '#bf8' : // tossup or late bonus
     '#8fb' // early bonus
     
   pause.nextElementSibling.textContent =
