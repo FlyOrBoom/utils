@@ -1,3 +1,80 @@
+<!doctype html>
+<html lang='en-US'>
+  <head>
+    <title>SciBowl Timer</title>
+    <meta charset='UTF-8'>
+    <meta name='description' content='Simple timer for Science Bowl.'>
+    <meta name='author' content='Xing'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+html, body {
+  font-size: 16px;
+  font-family: Helvetica, sans-serif
+}
+body {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+form {
+  border-radius: 1rem;
+  border: 0.5rem solid white;
+  display: flex;
+}
+form > label {
+  flex: 1 1 0;
+  padding: 1rem;
+  text-align: center;
+  user-select: none;
+}
+input {
+  display: none;
+}
+label {
+  transition: background 100ms;
+}
+label:hover {
+  background: white;
+}
+#mode > input:checked+label {
+  background: white;
+}
+#timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20vmin;
+} 
+    </style>
+  </head>
+  <body>
+<form id=mode>
+  <input name=mode type=radio id=tossup checked>
+  <label for=tossup>Toss-up</label>
+  <input name=mode type=radio id=bonus>
+  <label for=bonus>Bonus</label>
+</form>
+<output id=timer></output>
+<form id=time>
+  <input id=add type=button>
+  <label for=add>+ 1 s</label>
+  <input id=pause type=checkbox checked>
+  <label for=pause>Play</label>
+  <input id=subtract type=button>
+  <label for=subtract>- 1 s</label>
+</form>
+<section>
+  Keyboard shortcuts:
+  <ul>
+    <li>Play/pause: &lt;space&gt;</li>
+    <li>Toss-up: 1</li>
+    <li>Bonus: 2</li>
+    <li>Add 1 second: +</li>
+    <li>Subtract 1 second: -</li>
+  </ul>
+</section>
+<script>
 const TOSSUP = 5 * 1000
 const BONUS = 20 * 1000
 
@@ -69,3 +146,6 @@ function draw(){
   requestAnimationFrame(draw)
 }
 draw()
+</script>
+  </body>
+</html>
