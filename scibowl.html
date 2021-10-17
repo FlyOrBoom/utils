@@ -1,0 +1,31 @@
+const TOSSUP = 7
+const BONUS = 22
+
+const timer = document.getElementById('timer')
+let interval
+
+document.addEventListener('click',({target:{id}})=>{
+  switch(id){
+    case 'play':
+      clearInterval(interval)
+      interval = setInterval(()=>{
+        if(timer.value > 0){
+          timer.value = timer.value - 0.1
+        }else{
+
+        }
+      },100)
+      break
+    case 'pause':
+      clearInterval(interval)
+      break
+    case 'tossup':
+      clearInterval(interval)
+      timer.value = 5
+      break
+    case 'bonus':
+      clearInterval(interval)
+      timer.value = 20
+      break
+  }
+})
