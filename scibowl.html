@@ -1,31 +1,148 @@
-const TOSSUP = 7
-const BONUS = 22
+<!doctype html>
+<html lang='en-US'>
+  <head>
+    <title>SciBowl Timer</title>
+    <meta charset='UTF-8'>
+    <meta name='description' content='Simple timer for Science Bowl.'>
+    <meta name='author' content='Xing'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+html, body {
+  font-size: 16px;
+  font-family: Helvetica, sans-serif
+}
+body {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+form {
+  border-radius: 1rem;
+  border: 0.5rem solid white;
+  display: flex;
+}
+form > label {
+  flex: 1 1 0;
+  padding: 1rem;
+  text-align: center;
+  user-select: none;
+}
+input {
+  display: none;
+}
+label {
+  transition: background 100ms;
+}
+label:hover {
+  background: white;
+}
+#mode > input:checked+label {
+  background: white;
+}
+#timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20vmin;
+} 
+    </style>
+  </head>
+  <body>
+<form id=mode>
+  <input name=mode type=radio id=tossup checked>
+  <label for=tossup>Toss-up</label>
+  <input name=mode type=radio id=bonus>
+  <label for=bonus>Bonus</label>
+</form>
+<output id=timer></output>
+<form id=time>
+  <input id=add type=button>
+  <label for=add>+ 1 s</label>
+  <input id=pause type=checkbox checked>
+  <label for=pause>Play</label>
+  <input id=subtract type=button>
+  <label for=subtract>- 1 s</label>
+</form>
+<section>
+  Keyboard shortcuts:
+  <ul>
+    <li>Pause: &lt;space&gt;</li>
+    <li>Toss-up: 1</li>
+    <li>Bonus: 2</li>
+    <li>Add 1 second: +</li>
+    <li>Subtract 1 second: -</li>
+  </ul>
+</section>
+<script>
+const TOSSUP = 5 * 1000
+const BONUS = 20 * 1000
 
-const timer = document.getElementById('timer')
+const now = performance.now.bind(performance)
+
+let time = TOSSUP
+let prev = now()
+let delta = 0
+
 let interval
 
-document.addEventListener('click',({target:{id}})=>{
-  switch(id){
-    case 'play':
-      clearInterval(interval)
-      interval = setInterval(()=>{
-        if(timer.value > 0){
-          timer.value = timer.value - 0.1
-        }else{
+const $ = document.getElementById.bind(document)
+const timer = $('timer')
+const pause = $('pause')
+const add = $('add')
+const subtract = $('subtract')
+const tossup = $('tossup')
+const bonus = $('bonus')
 
-        }
-      },100)
+add.call = () => time += 1000
+subtract.call = () => time -= 1000
+tossup.call = () => {
+  tossup.checked = true
+  time = TOSSUP
+}
+bonus.call = () => {
+  bonus.checked = true
+  time = BONUS
+}
+
+add.addEventListener('click',add.call)
+subtract.addEventListener('click',subtract.call)
+
+tossup.addEventListener('input',tossup.call)
+bonus.addEventListener('input',bonus.call)
+
+document.addEventListener('keydown', event => {
+  console.log(event.key)
+  switch(event.key){
+    case ' ': pause.checked = !pause.checked 
       break
-    case 'pause':
-      clearInterval(interval)
+    case '1': tossup.call()
       break
-    case 'tossup':
-      clearInterval(interval)
-      timer.value = 5
+    case '2': bonus.call()
       break
-    case 'bonus':
-      clearInterval(interval)
-      timer.value = 20
+    case '+': case '=': add.call()
+      break
+    case '-': subtract.call()
       break
   }
 })
+
+function draw(){
+  delta = pause.checked ? 0 : now() - prev
+  prev = now()
+  time = Math.max(0, time - delta)
+  
+  document.body.style.backgroundColor = 
+    time === 0 ? '#faa' :
+    pause.checked ? '#acf' : '#afa'
+    
+  pause.nextElementSibling.textContent =
+    pause.checked ? 'Play' : 'Pause'
+  
+  timer.value = (time/1000).toFixed(1)
+  requestAnimationFrame(draw)
+}
+draw()
+</script>
+  </body>
+</html>
